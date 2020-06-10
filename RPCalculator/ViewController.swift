@@ -85,48 +85,70 @@ class ViewController: UIViewController {
     }
     
     func isInt(value: String) -> Bool {
-        if Int(value) != nil {
+        if let _ = Int(value) {
             return true
         }
         return false
     }
     
     func arithmetic(add: String, process: Int) {
+        if self.currentOperand.count != 0 {
+            addToExpression()
+        }
         if self.expressionList.count <= 1 {
             alertMessage(title: "Insufficient operands",text: "Write more operands")
-        } else if self.currentOperand.count != 0 {
-            alertMessage(title: "Existing operand",text: "Press 'Enter' before clicking a process")
         } else {
             self.expressionList.append(add)
-            var index = self.expressionList.count - 2
+            var index: Int = self.expressionList.count - 2
             let tempStack = Stack()
-            if isInt(value: self.expressionList[index]) == false {
-                while isInt(value: self.stack.pop() ?? "Potatoes") {
-                    tempStack.push(item: self.stack.pop()!)
-                }
-            } else {
-                while isInt(value: self.expressionList[index]) {
-                    tempStack.push(item: self.expressionList[index])
+            if isInt(value: self.expressionList[index].trimmingCharacters(in: .whitespaces)) {
+                index += 1
+                repeat {
                     index -= 1
-                }
+                    print(self.expressionList)
+                    print(self.expressionList[index])
+                    if isInt(value: self.expressionList[index].trimmingCharacters(in: .whitespaces)) {
+                        tempStack.push(item: self.expressionList[index].trimmingCharacters(in: .whitespaces))
+                    }
+                } while (isInt(value: self.expressionList[index].trimmingCharacters(in: .whitespaces)) && (index > 0))
+            } else {
+                var popValue: String = self.stack.pop()
+                print(popValue)
+                repeat {
+                    tempStack.push(item: popValue.trimmingCharacters(in: .whitespaces))
+                    popValue = self.stack.pop()
+                } while isInt(value: popValue)
             }
-            var number: String? = tempStack.pop()
-            var sum: Int = Int(number!)!
-            while number != nil {
+            var sum: Int = 0
+            switch process {
+            case 2:
+                sum = Int(tempStack.pop())!
+            case 3:
+                sum = 1
+            case 4:
+                sum = Int(tempStack.pop())!
+            default:
+                sum = 0
+            }
+            var number: String = tempStack.pop()
+            print("Sum at the beginning of while loop: \(sum)")
+            repeat {
                 switch process {
                 case 1:
-                    sum += Int(number!)!
+                    sum += Int(number)!
                 case 2:
-                    sum -= Int(number!)!
+                    sum -= Int(number)!
                 case 3:
-                    sum = sum * Int(number!)!
+                    sum = sum * Int(number)!
                 case 4:
-                    sum = sum / Int(number!)!
+                    sum = sum / Int(number)!
                 default:
                     NSLog("smthing wrong with the arithmetic")
                 }
+                print("Sum during while loop: \(sum)")
                 number = tempStack.pop()
-            }
+            } while number != ""
+            print("Final sum: \(sum)")
             stack.push(item: String(sum))
             setText()
         }
@@ -160,7 +182,12 @@ class ViewController: UIViewController {
         if self.expressionList.count == 0 {
             alertMessage(title: "Empty Expression",text: "You must first define the expression to evaluate")
         } else {
-            self.evaluation = stack.pop()!
+            let temp = stack.pop()
+            if temp == "" {
+                print("bad bueno. Evaluation failed.")
+            } else {
+                self.evaluation = temp
+            }
             setText()
         }
     }

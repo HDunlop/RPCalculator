@@ -20,11 +20,11 @@ class Stack {
         self.stack.append(item)
     }
     
-    func pop() -> String? {
+    func pop() -> String {
         if self.stack.count == 0 {
-            return nil
+            return ""
         }
-        return self.stack.popLast()
+        return self.stack.popLast()!
     }
     
 }
