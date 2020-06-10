@@ -8,21 +8,23 @@
 
 import Foundation
 
-struct Stack {
+class Stack {
     
-    static func push(tempStack: [String], item: String) -> [String] {
-        var stack = tempStack
-        stack.append(item)
-        return stack
+    var stack: [String]
+    
+    init() {
+        self.stack = [String]()
     }
     
-    static func pop(tempStack: [String]) -> String? {
-        var stack = tempStack
-        if stack.count == 0 {
+    func push(item: String) {
+        self.stack.append(item)
+    }
+    
+    func pop() -> String? {
+        if self.stack.count == 0 {
             return nil
-        } else {
-            return stack.popLast()
         }
+        return self.stack.popLast()
     }
     
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var stack = [String]()
+    var stack = Stack()
     var expressionList = [String]()
     var evaluation = ""
     var currentOperand = [String]()
@@ -74,13 +74,61 @@ class ViewController: UIViewController {
         } else if (self.currentOperand.count == 0) && (sign == true) {
             alertMessage(title: "Empty Expression",text: "You must first write an operator to change its sign")
         } else {
-            if sign { self.currentOperand[0] = String(Int(self.currentOperand[0])! * -1) }
+            if sign { self.currentOperand[0] = "-" + self.currentOperand[0] }
             else { self.currentOperand.append(num) }
             var temp = ""
             for number in currentOperand {
                 temp += number
             }
             Operand.text = temp
+        }
+    }
+    
+    func isInt(value: String) -> Bool {
+        if Int(value) != nil {
+            return true
+        }
+        return false
+    }
+    
+    func arithmetic(add: String, process: Int) {
+        if self.expressionList.count <= 1 {
+            alertMessage(title: "Insufficient operands",text: "Write more operands")
+        } else if self.currentOperand.count != 0 {
+            alertMessage(title: "Existing operand",text: "Press 'Enter' before clicking a process")
+        } else {
+            self.expressionList.append(add)
+            var index = self.expressionList.count - 2
+            let tempStack = Stack()
+            if isInt(value: self.expressionList[index]) == false {
+                while isInt(value: self.stack.pop() ?? "Potatoes") {
+                    tempStack.push(item: self.stack.pop()!)
+                }
+            } else {
+                while isInt(value: self.expressionList[index]) {
+                    tempStack.push(item: self.expressionList[index])
+                    index -= 1
+                }
+            }
+            var number: String? = tempStack.pop()
+            var sum: Int = Int(number!)!
+            while number != nil {
+                switch process {
+                case 1:
+                    sum += Int(number!)!
+                case 2:
+                    sum -= Int(number!)!
+                case 3:
+                    sum = sum * Int(number!)!
+                case 4:
+                    sum = sum / Int(number!)!
+                default:
+                    NSLog("smthing wrong with the arithmetic")
+                }
+                number = tempStack.pop()
+            }
+            stack.push(item: String(sum))
+            setText()
         }
     }
     
@@ -106,19 +154,14 @@ class ViewController: UIViewController {
     
     @IBAction func switchSign(_ sender: Any) { addNumber(num: "", sign: true) }
     
-    @IBAction func Enter(_ sender: Any) {
-        if (self.expressionList.count % 3 == 0) && (self.expressionList.count != 0) {
-            alertMessage(title: "Too many operands", text: "Maximum number of operands to evaluate by one operator is 3")
-        } else if self.currentOperand.count == 0 {
-            alertMessage(title: "Empty Expression",text: "You must first write an operator to add it to the expression")
-        } else {
-            addToExpression()
-        }
-    }
+    @IBAction func Enter(_ sender: Any) { addToExpression() }
     
     @IBAction func Evaluate(_ sender: Any) {
         if self.expressionList.count == 0 {
             alertMessage(title: "Empty Expression",text: "You must first define the expression to evaluate")
+        } else {
+            self.evaluation = stack.pop()!
+            setText()
         }
     }
     
@@ -135,29 +178,13 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func Addition(_ sender: Any) {
-        if self.expressionList.count <= 1 {
-            alertMessage(title: "Insufficient operands",text: "Write more operands")
-        }
-    }
+    @IBAction func Addition(_ sender: Any) { arithmetic(add: " +", process: 1) }
     
-    @IBAction func Subtraction(_ sender: Any) {
-        if self.expressionList.count == 0 {
-            alertMessage(title: "Empty Expression",text: "You must first write a digit to evaluate it")
-        }
-    }
+    @IBAction func Subtraction(_ sender: Any) { arithmetic(add: " -", process: 2) }
     
-    @IBAction func Multiplication(_ sender: Any) {
-        if self.expressionList.count == 0 {
-            alertMessage(title: "Empty Expression",text: "You must first write a digit to evaluate it")
-        }
-    }
+    @IBAction func Multiplication(_ sender: Any) { arithmetic(add: " ×", process: 3) }
     
-    @IBAction func Division(_ sender: Any) {
-        if self.expressionList.count == 0 {
-            alertMessage(title: "Empty Expression",text: "You must first write a digit to evaluate it")
-        }
-    }
+    @IBAction func Division(_ sender: Any) { arithmetic(add: " ÷", process: 4) }
     
     
 }
