@@ -15,6 +15,7 @@
 		4C6164CD248FD95D00F31CC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C6164CB248FD95D00F31CC0 /* LaunchScreen.storyboard */; };
 		4C6164D8248FD95D00F31CC0 /* RPCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6164D7248FD95D00F31CC0 /* RPCalculatorTests.swift */; };
 		4C6164E3248FD95D00F31CC0 /* RPCalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6164E2248FD95D00F31CC0 /* RPCalculatorUITests.swift */; };
+		4C6164F12490A07400F31CC0 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6164F02490A07400F31CC0 /* Stack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		4C6164DE248FD95D00F31CC0 /* RPCalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RPCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C6164E2248FD95D00F31CC0 /* RPCalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPCalculatorUITests.swift; sourceTree = "<group>"; };
 		4C6164E4248FD95D00F31CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C6164F02490A07400F31CC0 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				4C6164C0248FD95C00F31CC0 /* AppDelegate.swift */,
 				4C6164C2248FD95C00F31CC0 /* SceneDelegate.swift */,
 				4C6164C4248FD95C00F31CC0 /* ViewController.swift */,
+				4C6164F02490A07400F31CC0 /* Stack.swift */,
 				4C6164C6248FD95C00F31CC0 /* Main.storyboard */,
 				4C6164C9248FD95D00F31CC0 /* Assets.xcassets */,
 				4C6164CB248FD95D00F31CC0 /* LaunchScreen.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C6164F12490A07400F31CC0 /* Stack.swift in Sources */,
 				4C6164C5248FD95C00F31CC0 /* ViewController.swift in Sources */,
 				4C6164C1248FD95C00F31CC0 /* AppDelegate.swift in Sources */,
 				4C6164C3248FD95C00F31CC0 /* SceneDelegate.swift in Sources */,
@@ -435,6 +439,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RPCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -452,6 +457,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RPCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
