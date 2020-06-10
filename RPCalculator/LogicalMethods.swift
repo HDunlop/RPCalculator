@@ -16,7 +16,8 @@ struct LogicalMethods {
         for item in operand {
             temp += item
         }
-        return expression.append(temp)
+        let sex: [String] = expression.append(String(temp))
+        return sex
     }
     
     
