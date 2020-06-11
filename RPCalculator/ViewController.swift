@@ -35,19 +35,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        eval.isEnabled = false
-        clr.isEnabled = false
         setText()
     }
     
     func setText() {
-        eval.isEnabled = true
-        clr.isEnabled = true
         var expression = ""
         for item in self.expressionList {
             expression = expression + item
         }
         Expression.text = expression
+        self.currentOperand = [String]()
         Operand.text = ""
         Evaluation.text = self.evaluation
     }
@@ -59,13 +56,34 @@ class ViewController: UIViewController {
     }
     
     func addToExpression() {
-        var temp = " "
-        for item in currentOperand {
-            temp += item
+        if self.expressionList.count == 2 && self.currentOperand.count != 0 {
+            self.currentOperand = [String]()
+            alertMessage(title: "Too many operands", text: "Maximum number of operands per operator is 2")
+            setText()
+        } else if self.currentOperand.count == 0 {
+            alertMessage(title: "Nothing to add", text: "You must first write an operand to add it to the expression")
+        } else {
+            if self.expressionList.count > 2 {
+                let index: Int = self.expressionList.count - 1
+                if isInt(value: self.expressionList[index]) && isInt(value: self.expressionList[index - 1]) && self.currentOperand.count != 0 {
+                alertMessage(title: "Too many operands", text: "Maximum number of operands per operator is 2")
+                } else {
+                    var temp = " "
+                    for item in currentOperand {
+                        temp += item
+                    }
+                    self.expressionList.append(temp)
+                    setText()
+                }
+            } else {
+                var temp = " "
+                for item in currentOperand {
+                    temp += item
+                }
+                self.expressionList.append(temp)
+                setText()
+            }
         }
-        self.currentOperand = [String]()
-        self.expressionList.append(temp)
-        setText()
     }
     
     func addNumber(num: String, sign: Bool) {
@@ -85,7 +103,7 @@ class ViewController: UIViewController {
     }
     
     func isInt(value: String) -> Bool {
-        if let _ = Int(value) {
+        if Int(value.trimmingCharacters(in: .whitespaces)) != nil {
             return true
         }
         return false
@@ -98,59 +116,53 @@ class ViewController: UIViewController {
         if self.expressionList.count <= 1 {
             alertMessage(title: "Insufficient operands",text: "Write more operands")
         } else {
-            self.expressionList.append(add)
-            var index: Int = self.expressionList.count - 2
-            let tempStack = Stack()
-            if isInt(value: self.expressionList[index].trimmingCharacters(in: .whitespaces)) {
-                index += 1
-                repeat {
-                    index -= 1
-                    print(self.expressionList)
-                    print(self.expressionList[index])
-                    if isInt(value: self.expressionList[index].trimmingCharacters(in: .whitespaces)) {
-                        tempStack.push(item: self.expressionList[index].trimmingCharacters(in: .whitespaces))
-                    }
-                } while (isInt(value: self.expressionList[index].trimmingCharacters(in: .whitespaces)) && (index > 0))
+            if stack.getLength() > 2 {
+                alertMessage(title: "Too many operands",text: "Maximum number of operands or products of arithmetic processes to evaluate is 2")
+                self.expressionList = [String]()
+                self.stack.empty()
+                setText()
+            } else if isInt(value: self.expressionList[self.expressionList.count - 1]) == true && isInt(value: self.expressionList[self.expressionList.count - 2]) == false {
+                alertMessage(title: "Too few operands",text: "Minimum number of operands to evaluate by one operator is 2")
             } else {
-                var popValue: String = self.stack.pop()
-                print(popValue)
-                repeat {
-                    tempStack.push(item: popValue.trimmingCharacters(in: .whitespaces))
-                    popValue = self.stack.pop()
-                } while isInt(value: popValue)
-            }
-            var sum: Int = 0
-            switch process {
-            case 2:
-                sum = Int(tempStack.pop())!
-            case 3:
-                sum = 1
-            case 4:
-                sum = Int(tempStack.pop())!
-            default:
-                sum = 0
-            }
-            var number: String = tempStack.pop()
-            print("Sum at the beginning of while loop: \(sum)")
-            repeat {
+                self.expressionList.append(add)
+                var index: Int = self.expressionList.count - 2
+                let tempStack = Stack()
+                if isInt(value: self.expressionList[index]) {
+                    index += 1
+                    repeat {
+                        index -= 1
+                        if isInt(value: self.expressionList[index]) {
+                            tempStack.push(item: self.expressionList[index])
+                        }
+                    } while (isInt(value: self.expressionList[index]) && (index > 0))
+                } else {
+                    var popValue: String = self.stack.pop()
+                    repeat {
+                        tempStack.push(item: popValue)
+                        popValue = self.stack.pop()
+                    } while isInt(value: popValue)
+                }
+                tempStack.printStack(specificStack: "tempStack")
+                var sum: Int = Int(tempStack.pop())!
                 switch process {
                 case 1:
-                    sum += Int(number)!
+                    sum = sum + Int(tempStack.pop())!
                 case 2:
-                    sum -= Int(number)!
+                    sum = sum - Int(tempStack.pop())!
                 case 3:
-                    sum = sum * Int(number)!
+                    sum = sum * Int(tempStack.pop())!
                 case 4:
-                    sum = sum / Int(number)!
+                    sum = sum / Int(tempStack.pop())!
                 default:
-                    NSLog("smthing wrong with the arithmetic")
+                    alertMessage(title: "Arithmetic error", text: "Try making another expression")
+                    self.expressionList = [String]()
+                    self.stack.empty()
+                    setText()
                 }
-                print("Sum during while loop: \(sum)")
-                number = tempStack.pop()
-            } while number != ""
-            print("Final sum: \(sum)")
-            stack.push(item: String(sum))
-            setText()
+                stack.push(item: String(sum))
+                stack.printStack(specificStack: "main stack")
+                setText()
+            }
         }
     }
     
@@ -182,12 +194,7 @@ class ViewController: UIViewController {
         if self.expressionList.count == 0 {
             alertMessage(title: "Empty Expression",text: "You must first define the expression to evaluate")
         } else {
-            let temp = stack.pop()
-            if temp == "" {
-                print("bad bueno. Evaluation failed.")
-            } else {
-                self.evaluation = temp
-            }
+            self.evaluation = stack.pop()
             setText()
         }
     }
@@ -197,11 +204,12 @@ class ViewController: UIViewController {
             alertMessage(title: "Nothing to clear",text: "You must first write an operand or an expression to clear it")
         } else {
             if self.currentOperand.count != 0 {
-                self.currentOperand = [String]()
+                setText()
             } else {
                 self.expressionList = [String]()
+                self.stack.empty()
+                setText()
             }
-            setText()
         }
     }
     

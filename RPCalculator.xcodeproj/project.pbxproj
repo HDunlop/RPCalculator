@@ -16,7 +16,6 @@
 		4C6164D8248FD95D00F31CC0 /* RPCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6164D7248FD95D00F31CC0 /* RPCalculatorTests.swift */; };
 		4C6164E3248FD95D00F31CC0 /* RPCalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6164E2248FD95D00F31CC0 /* RPCalculatorUITests.swift */; };
 		4C6164F12490A07400F31CC0 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6164F02490A07400F31CC0 /* Stack.swift */; };
-		4CE1EF8024913E2D00C2979A /* LogicalMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE1EF7F24913E2D00C2979A /* LogicalMethods.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +51,6 @@
 		4C6164E2248FD95D00F31CC0 /* RPCalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPCalculatorUITests.swift; sourceTree = "<group>"; };
 		4C6164E4248FD95D00F31CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C6164F02490A07400F31CC0 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
-		4CE1EF7F24913E2D00C2979A /* LogicalMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogicalMethods.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +104,6 @@
 				4C6164C0248FD95C00F31CC0 /* AppDelegate.swift */,
 				4C6164C2248FD95C00F31CC0 /* SceneDelegate.swift */,
 				4C6164C4248FD95C00F31CC0 /* ViewController.swift */,
-				4CE1EF7F24913E2D00C2979A /* LogicalMethods.swift */,
 				4C6164F02490A07400F31CC0 /* Stack.swift */,
 				4C6164C6248FD95C00F31CC0 /* Main.storyboard */,
 				4C6164C9248FD95D00F31CC0 /* Assets.xcassets */,
@@ -269,7 +266,6 @@
 				4C6164C5248FD95C00F31CC0 /* ViewController.swift in Sources */,
 				4C6164C1248FD95C00F31CC0 /* AppDelegate.swift in Sources */,
 				4C6164C3248FD95C00F31CC0 /* SceneDelegate.swift in Sources */,
-				4CE1EF8024913E2D00C2979A /* LogicalMethods.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

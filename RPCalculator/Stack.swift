@@ -17,7 +17,7 @@ class Stack {
     }
     
     func push(item: String) {
-        self.stack.append(item)
+        self.stack.append(item.trimmingCharacters(in: .whitespaces))
     }
     
     func pop() -> String {
@@ -25,6 +25,23 @@ class Stack {
             return ""
         }
         return self.stack.popLast()!
+    }
+    
+    func empty() {
+        self.stack = [String]()
+    }
+    
+    func getLength() -> Int {
+        print("Stack length: \(self.stack.count)")
+        return self.stack.count
+    }
+    
+    func printStack(specificStack: String) {
+        print("printing \(specificStack)...")
+        for number in stack {
+            print(number)
+        }
+        print("finished printing.")
     }
     
 }
