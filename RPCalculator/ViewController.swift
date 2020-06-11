@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var expressionList = [String]()
     var evaluation = ""
     var currentOperand = [String]()
+    var logicalMethods = LogicalMethods()
     
     @IBOutlet var Expression: UILabel!
     @IBOutlet var Evaluation: UILabel!
@@ -32,6 +33,11 @@ class ViewController: UIViewController {
     
     @IBOutlet var eval: UIButton!
     @IBOutlet var clr: UIButton!
+    
+    @IBOutlet var plus: UIButton!
+    @IBOutlet var minus: UIButton!
+    @IBOutlet var times: UIButton!
+    @IBOutlet var obelus: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,115 +61,36 @@ class ViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func addToExpression() {
-        if self.expressionList.count == 2 && self.currentOperand.count != 0 {
-            self.currentOperand = [String]()
-            alertMessage(title: "Too many operands", text: "Maximum number of operands per operator is 2")
-            setText()
-        } else if self.currentOperand.count == 0 {
-            alertMessage(title: "Nothing to add", text: "You must first write an operand to add it to the expression")
-        } else {
-            if self.expressionList.count > 2 {
-                let index: Int = self.expressionList.count - 1
-                if isInt(value: self.expressionList[index]) && isInt(value: self.expressionList[index - 1]) && self.currentOperand.count != 0 {
-                alertMessage(title: "Too many operands", text: "Maximum number of operands per operator is 2")
-                } else {
-                    var temp = " "
-                    for item in currentOperand {
-                        temp += item
-                    }
-                    self.expressionList.append(temp)
-                    setText()
-                }
-            } else {
-                var temp = " "
-                for item in currentOperand {
-                    temp += item
-                }
-                self.expressionList.append(temp)
-                setText()
-            }
-        }
-    }
-    
     func addNumber(num: String, sign: Bool) {
-        if (self.currentOperand.count == 3) && (sign == false) {
-            alertMessage(title: "Too many digits", text: "Maximum number of digits per operand is 3")
-        } else if (self.currentOperand.count == 0) && (sign == true) {
-            alertMessage(title: "Empty Expression",text: "You must first write an operator to change its sign")
-        } else {
-            if sign { self.currentOperand[0] = "-" + self.currentOperand[0] }
-            else { self.currentOperand.append(num) }
+        let returnList = logicalMethods.addNumber(num: num, sign: sign)
+        if returnList[0] != "failed" {
+            self.currentOperand = returnList
             var temp = ""
             for number in currentOperand {
                 temp += number
             }
             Operand.text = temp
-        }
-    }
-    
-    func isInt(value: String) -> Bool {
-        if Int(value.trimmingCharacters(in: .whitespaces)) != nil {
-            return true
-        }
-        return false
-    }
-    
-    func arithmetic(add: String, process: Int) {
-        if self.currentOperand.count != 0 {
-            addToExpression()
-        }
-        if self.expressionList.count <= 1 {
-            alertMessage(title: "Insufficient operands",text: "Write more operands")
         } else {
-            if stack.getLength() > 2 {
-                alertMessage(title: "Too many operands",text: "Maximum number of operands or products of arithmetic processes to evaluate is 2")
+            alertMessage(title: returnList[1], text: returnList[2])
+        }
+    }
+    
+    func arithmeticMedium(add: String, process: Int) {
+        let returnList = logicalMethods.arithmetic(add: add, process: process)
+        if returnList[0][0] == "failed" {
+            if (returnList[0][1] == "Too many operands") || (returnList[0][1] == "Arithmetic error") || (returnList[0][1] == "Division by 0") {
                 self.expressionList = [String]()
                 self.stack.empty()
-                setText()
-            } else if isInt(value: self.expressionList[self.expressionList.count - 1]) == true && isInt(value: self.expressionList[self.expressionList.count - 2]) == false {
-                alertMessage(title: "Too few operands",text: "Minimum number of operands to evaluate by one operator is 2")
             } else {
-                self.expressionList.append(add)
-                var index: Int = self.expressionList.count - 2
-                let tempStack = Stack()
-                if isInt(value: self.expressionList[index]) {
-                    index += 1
-                    repeat {
-                        index -= 1
-                        if isInt(value: self.expressionList[index]) {
-                            tempStack.push(item: self.expressionList[index])
-                        }
-                    } while (isInt(value: self.expressionList[index]) && (index > 0))
-                } else {
-                    var popValue: String = self.stack.pop()
-                    repeat {
-                        tempStack.push(item: popValue)
-                        popValue = self.stack.pop()
-                    } while isInt(value: popValue)
-                }
-                tempStack.printStack(specificStack: "tempStack")
-                var sum: Int = Int(tempStack.pop())!
-                switch process {
-                case 1:
-                    sum = sum + Int(tempStack.pop())!
-                case 2:
-                    sum = sum - Int(tempStack.pop())!
-                case 3:
-                    sum = sum * Int(tempStack.pop())!
-                case 4:
-                    sum = sum / Int(tempStack.pop())!
-                default:
-                    alertMessage(title: "Arithmetic error", text: "Try making another expression")
-                    self.expressionList = [String]()
-                    self.stack.empty()
-                    setText()
-                }
-                stack.push(item: String(sum))
-                stack.printStack(specificStack: "main stack")
-                setText()
+                self.expressionList = returnList[1]
             }
+            alertMessage(title: returnList[0][1], text: returnList[0][2])
+            setText()
+        } else {
+            self.expressionList = returnList[0]
+            stack.push(item: self.expressionList.popLast()!)
         }
+        setText()
     }
     
     @IBAction func pressOne(_ sender: Any) { addNumber(num: "1", sign: false) }
@@ -188,12 +115,35 @@ class ViewController: UIViewController {
     
     @IBAction func switchSign(_ sender: Any) { addNumber(num: "", sign: true) }
     
-    @IBAction func Enter(_ sender: Any) { addToExpression() }
+    @IBAction func Enter(_ sender: Any) {
+        let returnList = logicalMethods.addToExpression()
+        if returnList[0] == "failed" {
+            alertMessage(title: returnList[1], text: returnList[2])
+        } else {
+            self.expressionList = returnList
+            setText()
+        }
+    }
     
     @IBAction func Evaluate(_ sender: Any) {
         if self.expressionList.count == 0 {
-            alertMessage(title: "Empty Expression",text: "You must first define the expression to evaluate")
+            alertMessage(title: "Empty Expression", text: "You must first define the expression to evaluate")
         } else {
+            one.isEnabled = false
+            two.isEnabled = false
+            three.isEnabled = false
+            four.isEnabled = false
+            five.isEnabled = false
+            six.isEnabled = false
+            seven.isEnabled = false
+            eight.isEnabled = false
+            nine.isEnabled = false
+            zero.isEnabled = false
+            eval.isEnabled = false
+            plus.isEnabled = false
+            minus.isEnabled = false
+            times.isEnabled = false
+            obelus.isEnabled = false
             self.evaluation = stack.pop()
             setText()
         }
@@ -203,9 +153,26 @@ class ViewController: UIViewController {
         if (self.currentOperand.count == 0) && (self.expressionList.count == 0) {
             alertMessage(title: "Nothing to clear",text: "You must first write an operand or an expression to clear it")
         } else {
+            one.isEnabled = true
+            two.isEnabled = true
+            three.isEnabled = true
+            four.isEnabled = true
+            five.isEnabled = true
+            six.isEnabled = true
+            seven.isEnabled = true
+            eight.isEnabled = true
+            nine.isEnabled = true
+            zero.isEnabled = true
+            eval.isEnabled = true
+            plus.isEnabled = true
+            minus.isEnabled = true
+            times.isEnabled = true
+            obelus.isEnabled = true
             if self.currentOperand.count != 0 {
                 setText()
+                logicalMethods.clear(process: 1)
             } else {
+                logicalMethods.clear(process: 2)
                 self.expressionList = [String]()
                 self.stack.empty()
                 setText()
@@ -213,14 +180,12 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func Addition(_ sender: Any) { arithmetic(add: " +", process: 1) }
+    @IBAction func Addition(_ sender: Any) { arithmeticMedium(add: " +", process: 1) }
     
-    @IBAction func Subtraction(_ sender: Any) { arithmetic(add: " -", process: 2) }
+    @IBAction func Subtraction(_ sender: Any) { arithmeticMedium(add: " -", process: 2) }
     
-    @IBAction func Multiplication(_ sender: Any) { arithmetic(add: " ×", process: 3) }
+    @IBAction func Multiplication(_ sender: Any) { arithmeticMedium(add: " ×", process: 3) }
     
-    @IBAction func Division(_ sender: Any) { arithmetic(add: " ÷", process: 4) }
-    
+    @IBAction func Division(_ sender: Any) { arithmeticMedium(add: " ÷", process: 4) }
     
 }
-

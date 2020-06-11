@@ -284,11 +284,15 @@
                         <outlet property="eval" destination="bQZ-u0-nco" id="Vp1-j1-VXO"/>
                         <outlet property="five" destination="0XT-Ek-q78" id="Y4M-fP-SgF"/>
                         <outlet property="four" destination="hF0-sb-coF" id="1NP-nh-mLx"/>
+                        <outlet property="minus" destination="c6Q-aS-ITc" id="hLf-hr-Gpi"/>
                         <outlet property="nine" destination="Ciu-QT-meA" id="Ph7-YY-Lwc"/>
+                        <outlet property="obelus" destination="Mpq-qR-GlM" id="3rW-ho-Rgh"/>
                         <outlet property="one" destination="wXJ-RP-GwI" id="7X3-Lj-T7B"/>
+                        <outlet property="plus" destination="fXI-ga-Ucm" id="gYD-Hs-wPL"/>
                         <outlet property="seven" destination="459-bc-OCa" id="9Qg-dU-qQC"/>
                         <outlet property="six" destination="O3c-rQ-hiP" id="lad-u1-4mg"/>
                         <outlet property="three" destination="9Ao-XJ-gpm" id="mYm-kA-61A"/>
+                        <outlet property="times" destination="iet-zL-gTX" id="xCo-pB-OYy"/>
                         <outlet property="two" destination="TgS-In-pnO" id="tlG-Of-bho"/>
                         <outlet property="zero" destination="nYG-i0-bux" id="uTo-im-WU2"/>
                     </connections>

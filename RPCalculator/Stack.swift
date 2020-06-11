@@ -32,7 +32,6 @@ class Stack {
     }
     
     func getLength() -> Int {
-        print("Stack length: \(self.stack.count)")
         return self.stack.count
     }
     
