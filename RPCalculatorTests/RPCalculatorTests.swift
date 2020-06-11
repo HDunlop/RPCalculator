@@ -9,6 +9,9 @@
 import XCTest
 @testable import RPCalculator
 
+//XCTAssertEqual(actual, expected)
+//XCTAssertTrue(actual, expected)
+
 class RPCalculatorTests: XCTestCase {
 
     override func setUpWithError() throws {

@@ -36,11 +36,9 @@ class Stack {
     }
     
     func printStack(specificStack: String) {
-        print("printing \(specificStack)...")
         for number in stack {
             print(number)
         }
-        print("finished printing.")
     }
     
 }

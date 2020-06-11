@@ -81,16 +81,16 @@ class ViewController: UIViewController {
             if (returnList[0][1] == "Too many operands") || (returnList[0][1] == "Arithmetic error") || (returnList[0][1] == "Division by 0") {
                 self.expressionList = [String]()
                 self.stack.empty()
+                setText()
             } else {
                 self.expressionList = returnList[1]
             }
             alertMessage(title: returnList[0][1], text: returnList[0][2])
-            setText()
         } else {
             self.expressionList = returnList[0]
             stack.push(item: self.expressionList.popLast()!)
+            setText()
         }
-        setText()
     }
     
     @IBAction func pressOne(_ sender: Any) { addNumber(num: "1", sign: false) }
