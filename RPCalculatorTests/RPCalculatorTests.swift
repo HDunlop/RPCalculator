@@ -9,9 +9,6 @@
 import XCTest
 @testable import RPCalculator
 
-//XCTAssertEqual(actual, expected)
-//XCTAssertTrue(actual, expected)
-
 class RPCalculatorTests: XCTestCase {
 
     var stack = Stack()
@@ -88,11 +85,9 @@ class RPCalculatorTests: XCTestCase {
         }
     }
     
-//    " +" " -" " ×" " ÷"
-    
-    func testingLogicalMethodsArithmetic() {
-        let testCases: [[[String]]] = [[[], [], [], [""], ["arithmetic", " ÷"]], [[], [], [], [""], ["arithmetic", "qwerty"]]]
-        let testExpected: [[[String]]] = [[[String(true)]], [[String(false)]]]
+    func testingErrorHandlingOfLogicalMethodsArithmetic() {
+        let testCases: [[[String]]] = [[[""], ["1","1"], ["1"], [""], ["arithmetic", " ÷", "4"]], [[""], ["1","1","1","1","1"], ["1"], [""], ["arithmetic", " ÷", "4"]], [[], ["1"], [], [""], ["arithmetic", " ÷", "4"]], [[], [], ["1"], [""], ["arithmetic", " ÷", "4"]], [["1","1"], ["1","1"], [], [""], ["arithmetic", " ÷", "4"]], [["1"], ["2"," 1"," -", " 0"], [], [""], ["arithmetic", " ÷", "4"]], [["1"], ["2"," 1"," -"], ["0"], [""], ["arithmetic", " ÷", "4"]], [[], ["2"," 1"," -", " 0"], [], [""], ["arithmetic", " +", "1"]], [[], ["2"," 1"," -"], ["0"], [""], ["arithmetic", " +", "1"]], [[], ["2"," 0"], [], [""], ["arithmetic", " ÷", "4"]], [[], ["2"], ["0"], [""], ["arithmetic", " ÷", "4"]], [["1"], ["2"," 1"," -", " 0"], [], [""], ["arithmetic", " +", "1"]], [["1"], ["2"," 1"," -"], ["0"], [""], ["arithmetic", " +", "1"]], [[], ["2"," 1"], [], [""], ["arithmetic", " -", "2"]], [[], ["2"], ["1"], [""], ["arithmetic", " -", "2"]]]
+        let testExpected: [[[String]]] = [[["failed", "Too many operands", "Maximum number of operands per operator is 2"]], [["failed", "Too many operands", "Maximum number of operands per operator is 2"]], [["failed", "Insufficient operands", "Write more operands"], []], [["failed", "Insufficient operands", "Write more operands"], [" 1"]], [["failed", "Too many operands", "Maximum number of operands or products of arithmetic processes to evaluate is 2"], []], [["failed", "Division by 0", "u dun oofed brœther"], []], [["failed", "Division by 0", "u dun oofed brœther"], ["2"," 1"," -", " 0"]], [["failed", "Too few operands", "Minimum number of operands to evaluate by one operator is 2"], []], [["failed", "Too few operands", "Minimum number of operands to evaluate by one operator is 2"], ["2"," 1"," -", " 0"]], [["failed", "Division by 0", "u dun oofed brœther"], []], [["failed", "Division by 0", "u dun oofed brœther"], ["2"," 0"]], [["2"," 1"," -", " 0", " +", "1"], []], [["2"," 1"," -", " 0", " +", "1"], ["2"," 1"," -", " 0"]], [["2"," 1", " -", "1"], []], [["2"," 1", " -", "1"], ["2"," 1"]]]
         
         for index in 0..<testCases.count {
             let expected = testExpected[index]
@@ -100,49 +95,4 @@ class RPCalculatorTests: XCTestCase {
             XCTAssertEqual(actual,expected)
         }
     }
-    
-    
-    
-    
-    
 }
-
-
-
-
-
-
-
-
-//mutating func overrideValues(stack: [String], expressionList: [String], currentOperand: [String], evaluation: String, methodCall: [String]) -> [[String]] {
-//    let tempStack = self.stack.returnStack()
-//    let tempExpressionList = self.expressionList
-//    let tempCurrentOperand = self.currentOperand
-//    let tempEvaluation = self.evaluation
-//
-//    self.stack.overrideStack(stack: stack)
-//    self.expressionList = expressionList
-//    self.currentOperand = currentOperand
-//    self.evaluation = evaluation
-//
-//    var returnList: [[String]] = [[String]]()
-//    switch methodCall[0] {
-//    case "addToExpression":
-//        returnList = [addToExpression()]
-//    case "addNumber":
-//        returnList = [addNumber(num: methodCall[1], sign: Bool(methodCall[2])!)]
-//    case "isInt":
-//        returnList = [[String(isInt(value: methodCall[1]))]]
-//    case "arithmetic":
-//        returnList = arithmetic(add: methodCall[1], process: Int(methodCall[2])!)
-//    default:
-//        returnList = [["unknown methodCall"]]
-//    }
-//
-//    self.stack.overrideStack(stack: tempStack)
-//    self.expressionList = tempExpressionList
-//    self.currentOperand = tempCurrentOperand
-//    self.evaluation = tempEvaluation
-//
-//    return returnList
-//}

@@ -76,7 +76,7 @@ struct LogicalMethods {
         if self.expressionList.count <= 1 {
             return [["failed", "Insufficient operands", "Write more operands"], returnList]
         } else {
-            if stack.getLength() > 2 {
+            if stack.getLength() > 1 {
                 self.expressionList = [String]()
                 self.stack.empty()
                 return [["failed", "Too many operands", "Maximum number of operands or products of arithmetic processes to evaluate is 2"], returnList]
@@ -92,11 +92,19 @@ struct LogicalMethods {
                     case 3:
                         sum = number * Int(self.expressionList[self.expressionList.count - 1].trimmingCharacters(in: .whitespaces))!
                     case 4:
-                        sum = number / Int(self.expressionList[self.expressionList.count - 1].trimmingCharacters(in: .whitespaces))!
+                        let divisor = Int(self.expressionList[self.expressionList.count - 1].trimmingCharacters(in: .whitespaces))!
+                        if divisor != 0 {
+                            sum = number / divisor
+                        } else {
+                            self.expressionList = [String]()
+                            self.stack.empty()
+                            return [["failed", "Division by 0", "u dun oofed brœther"], returnList]
+                        }
                     default:
                         self.expressionList = [String]()
                         self.stack.empty()
                         return [["failed", "Arithmetic error", "Try making another expression"], returnList]
+//                        I don't know how to provoke this error
                     }
                     stack.push(item: String(sum))
                     self.expressionList.append(add)
@@ -138,9 +146,9 @@ struct LogicalMethods {
                     case 3:
                         sum = sum * Int(tempStack.pop())!
                     case 4:
-                        let number = Int(tempStack.pop())!
-                        if number != 0 {
-                            sum = sum / number
+                        let divisor = Int(tempStack.pop())!
+                        if divisor != 0 {
+                            sum = sum / divisor
                         } else {
                             self.expressionList = [String]()
                             self.stack.empty()
@@ -150,6 +158,7 @@ struct LogicalMethods {
                         self.expressionList = [String]()
                         self.stack.empty()
                         return [["failed", "Arithmetic error", "Try making another expression"], returnList]
+//                        I don't know how to provoke this error
                     }
                 }
                 stack.push(item: String(sum))
