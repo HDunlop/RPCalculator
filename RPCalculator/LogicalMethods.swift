@@ -52,8 +52,13 @@ struct LogicalMethods {
         } else if (self.currentOperand.count == 0) && (sign == true) {
             return ["failed", "Empty Expression", "You must first write an operator to change its sign"]
         } else {
-            if sign { self.currentOperand[0] = "-" + self.currentOperand[0] }
-            else { self.currentOperand.append(num) }
+            if sign {
+                if self.currentOperand[0] == "0" {
+                    self.currentOperand[0] = "-" + self.currentOperand[0]
+                } else {
+                    self.currentOperand[0] = String(-1 * Int(self.currentOperand[0])!)
+                }
+            } else { self.currentOperand.append(num) }
             return self.currentOperand
         }
     }
@@ -209,6 +214,18 @@ struct LogicalMethods {
         self.evaluation = tempEvaluation
         
         return returnList
+    }
+    
+    func getCurrentOperand() -> [String] {
+        return self.currentOperand
+    }
+    
+    func getExpressionList() -> [String] {
+        return self.expressionList
+    }
+    
+    func getStack() -> [String] {
+        return self.stack.returnStack()
     }
     
 }
