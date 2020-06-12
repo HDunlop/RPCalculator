@@ -126,7 +126,6 @@ struct LogicalMethods {
                         popValue = self.stack.pop()
                     } while isInt(value: popValue)
                 }
-                tempStack.printStack(specificStack: "tempStack")
                 var sum: Int = Int(tempStack.pop())!
                 if tempStack.getLength() == 0 {
                     return [["failed", "Too few operands", "Minimum number of operands to evaluate by one operator is 2"], returnList]
@@ -169,4 +168,38 @@ struct LogicalMethods {
             self.stack.empty()
         }
     }
+    
+    mutating func overrideValues(stack: [String], expressionList: [String], currentOperand: [String], evaluation: String, methodCall: [String]) -> [[String]] {
+        let tempStack = self.stack.returnStack()
+        let tempExpressionList = self.expressionList
+        let tempCurrentOperand = self.currentOperand
+        let tempEvaluation = self.evaluation
+        
+        self.stack.overrideStack(stack: stack)
+        self.expressionList = expressionList
+        self.currentOperand = currentOperand
+        self.evaluation = evaluation
+        
+        var returnList: [[String]] = [[String]]()
+        switch methodCall[0] {
+        case "addToExpression":
+            returnList = [addToExpression()]
+        case "addNumber":
+            returnList = [addNumber(num: methodCall[1], sign: Bool(methodCall[2])!)]
+        case "isInt":
+            returnList = [[String(isInt(value: methodCall[1]))]]
+        case "arithmetic":
+            returnList = arithmetic(add: methodCall[1], process: Int(methodCall[2])!)
+        default:
+            returnList = [["unknown methodCall"]]
+        }
+        
+        self.stack.overrideStack(stack: tempStack)
+        self.expressionList = tempExpressionList
+        self.currentOperand = tempCurrentOperand
+        self.evaluation = tempEvaluation
+        
+        return returnList
+    }
+    
 }

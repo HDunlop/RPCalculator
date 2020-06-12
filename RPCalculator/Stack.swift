@@ -35,10 +35,15 @@ class Stack {
         return self.stack.count
     }
     
-    func printStack(specificStack: String) {
-        for number in stack {
-            print(number)
-        }
+    func peek() -> String {
+        return self.stack[self.stack.count - 1]
     }
     
+    func returnStack() -> [String] {
+        return self.stack
+    }
+    
+    func overrideStack(stack: [String]) {
+        self.stack = stack
+    }
 }

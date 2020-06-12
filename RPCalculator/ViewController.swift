@@ -71,7 +71,7 @@ class ViewController: UIViewController {
             }
             Operand.text = temp
         } else {
-            alertMessage(title: returnList[1], text: returnList[2])
+            let _ = alertMessage(title: returnList[1], text: returnList[2])
         }
     }
     
@@ -85,7 +85,7 @@ class ViewController: UIViewController {
             } else {
                 self.expressionList = returnList[1]
             }
-            alertMessage(title: returnList[0][1], text: returnList[0][2])
+            let _ = alertMessage(title: returnList[0][1], text: returnList[0][2])
         } else {
             self.expressionList = returnList[0]
             stack.push(item: self.expressionList.popLast()!)
@@ -118,7 +118,7 @@ class ViewController: UIViewController {
     @IBAction func Enter(_ sender: Any) {
         let returnList = logicalMethods.addToExpression()
         if returnList[0] == "failed" {
-            alertMessage(title: returnList[1], text: returnList[2])
+            let _ = alertMessage(title: returnList[1], text: returnList[2])
         } else {
             self.expressionList = returnList
             setText()
@@ -127,7 +127,7 @@ class ViewController: UIViewController {
     
     @IBAction func Evaluate(_ sender: Any) {
         if self.expressionList.count == 0 {
-            alertMessage(title: "Empty Expression", text: "You must first define the expression to evaluate")
+            let _ = alertMessage(title: "Empty Expression", text: "You must first define the expression to evaluate")
         } else {
             one.isEnabled = false
             two.isEnabled = false
@@ -151,7 +151,7 @@ class ViewController: UIViewController {
     
     @IBAction func Clear(_ sender: Any) {
         if (self.currentOperand.count == 0) && (self.expressionList.count == 0) {
-            alertMessage(title: "Nothing to clear",text: "You must first write an operand or an expression to clear it")
+            let _ = alertMessage(title: "Nothing to clear",text: "You must first write an operand or an expression to clear it")
         } else {
             one.isEnabled = true
             two.isEnabled = true
