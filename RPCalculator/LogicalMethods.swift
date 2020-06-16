@@ -82,9 +82,40 @@ struct LogicalMethods {
             return [["failed", "Insufficient operands", "Write more operands"], returnList]
         } else {
             if stack.getLength() > 1 {
+//                if isInt(value: self.expressionList[self.expressionList.count - 2]) == false && isInt(value: self.expressionList[self.expressionList.count - 3]) == true && isInt(value: self.expressionList[self.expressionList.count - 4]) == true {
+//                    var sum = Int(stack.pop().trimmingCharacters(in: .whitespaces))!
+//                    let number = Int(stack.pop().trimmingCharacters(in: .whitespaces))!
+//                    switch process {
+//                    case 1:
+//                        sum += number
+//                    case 2:
+//                        sum = number - sum
+//                    case 3:
+//                        sum = sum * number
+//                    case 4:
+//                        if sum != 0 {
+//                            sum = number / sum
+//                        } else {
+//                            self.expressionList = [String]()
+//                            self.stack.empty()
+//                            return [["failed", "Division by 0", "u dun oofed brœther"], returnList]
+//                        }
+//                    default:
+//                        self.expressionList = [String]()
+//                            self.stack.empty()
+//                            return [["failed", "Arithmetic error", "Try making another expression"], returnList]
+//                        I don't know how to provoke this error
+//                    }
+//                    stack.push(item: String(sum))
+//                    self.expressionList.append(String(sum))
+//                    let temp = self.expressionList
+//                    let _ = self.expressionList.popLast()!
+//                    return [temp, returnList]
+//                } else {
                 self.expressionList = [String]()
                 self.stack.empty()
                 return [["failed", "Too many operands", "Maximum number of operands or products of arithmetic processes to evaluate is 2"], returnList]
+//                }
             } else if isInt(value: self.expressionList[self.expressionList.count - 1]) == true && isInt(value: self.expressionList[self.expressionList.count - 2]) == false {
                 if stack.getLength() == 1 {
                     let number: Int = Int(stack.pop().trimmingCharacters(in: .whitespaces))!
@@ -112,6 +143,7 @@ struct LogicalMethods {
 //                        I don't know how to provoke this error
                     }
                     stack.push(item: String(sum))
+                    print("This is the sum at the end of the arithmetic function: \(sum)")
                     self.expressionList.append(add)
                     self.expressionList.append(String(sum))
                     let temp = self.expressionList
@@ -214,18 +246,6 @@ struct LogicalMethods {
         self.evaluation = tempEvaluation
         
         return returnList
-    }
-    
-    func getCurrentOperand() -> [String] {
-        return self.currentOperand
-    }
-    
-    func getExpressionList() -> [String] {
-        return self.expressionList
-    }
-    
-    func getStack() -> [String] {
-        return self.stack.returnStack()
     }
     
 }
